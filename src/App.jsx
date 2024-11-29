@@ -1,15 +1,40 @@
 import './App.css'
 import {useState} from "react";
 import {useForm} from 'react-hook-form';
+import Input from "./components/Input.jsx";
+import Counter from "./components/Counter.jsx";
+import Button from "./components/Button.jsx";
 
 function App() {
-    const [fruitAardbeiAmount, setAardbeiFruitAmount] = useState(0);
-    const [fruitBanaanAmount, setBanaanFruitAmount] = useState(0);
-    const [fruitAppelAmount, setAppelFruitAmount] = useState(0);
-    const [fruitKiwiAmount, setKiwiFruitAmount] = useState(0);
+
+    const [counterState, setCounterState] = useState({
+        aardbeiAmount: 0,
+        banaanAmount: 0,
+        appelAmount: 0,
+        kiwiAmount:0,
+    });
 
     function resetFruitCounter() {
-        return setAardbeiFruitAmount(0) + setBanaanFruitAmount(0) + setAppelFruitAmount(0) + setKiwiFruitAmount(0)
+        return setCounterState( {
+            aardbeiAmount: 0,
+            banaanAmount: 0,
+            appelAmount: 0,
+            kiwiAmount:0,
+        })
+    }
+    function counterPlus(fruit){
+
+        setCounterState(prevState => ({
+            ...prevState,
+            [fruit]:prevState[fruit] + 1,
+        }));
+    }
+
+    function counterMin(fruit) {
+        setCounterState(prevState => ({
+            ...prevState,
+            [fruit]: prevState[fruit] > 0 ? prevState[fruit] - 1 : 0,
+        }));
     }
 
     function handleFormSubmit(data) {
@@ -17,80 +42,50 @@ function App() {
     }
 
     const { register, handleSubmit } = useForm({
+        defaultValues: {
+            "deliveryTime": "dayTime"
+        }
     });
 
     return (<>
         <section>
-            <article className="fruit-container">
-                <h2>🍓 Aardbeiden</h2>
-                <button type="button"
-                        onClick={() => setAardbeiFruitAmount(fruitAardbeiAmount ? fruitAardbeiAmount - 1 : 0)}>-
-                </button>
-                <p>{fruitAardbeiAmount}</p>
-                <button type="button" onClick={() => setAardbeiFruitAmount(fruitAardbeiAmount + 1)}>+</button>
-            </article>
-            <article className="fruit-container">
-                <h2> 🍌 Bananen</h2>
-                <button type="button"
-                        onClick={() => setBanaanFruitAmount(fruitBanaanAmount ? fruitBanaanAmount - 1 : 0)}>-
-                </button>
-                <p>{fruitBanaanAmount}</p>
-                <button type="button" onClick={() => setBanaanFruitAmount(fruitBanaanAmount + 1)}>+</button>
-            </article>
-            <article className="fruit-container">
-                <h2>🍏 Appels</h2>
-                <button type="button"
-                        onClick={() => setAppelFruitAmount(fruitAppelAmount ? fruitAppelAmount - 1 : 0)}>-
-                </button>
-                <p>{fruitAppelAmount}</p>
-                <button type="button" onClick={() => setAppelFruitAmount(fruitAppelAmount + 1)}>+</button>
-            </article>
-            <article className="fruit-container">
-                <h2>🥝 Kiwi&#39;s</h2>
-                <button type="button" onClick={() => setKiwiFruitAmount(fruitKiwiAmount ? fruitKiwiAmount - 1 : 0)}>-
-                </button>
-                <p>{fruitKiwiAmount}</p>
-                <button type="button" onClick={() => setKiwiFruitAmount(fruitKiwiAmount + 1)}>+</button>
-            </article>
-            <button type="button" onClick={resetFruitCounter}>Reset</button>
+            <Counter counterTitle="🍓 Aardbeiden" fruitAmount={counterState.aardbeiAmount} counterMin={counterMin} counterPlus ={counterPlus} fruit="aardbeiAmount" />
+            <Counter counterTitle="🍌 Bananen"  fruitAmount={counterState.banaanAmount} counterMin={counterMin} counterPlus ={counterPlus} fruit="banaanAmount" />
+            <Counter counterTitle="🍏 Appels"  fruitAmount={counterState.appelAmount} counterMin={counterMin} counterPlus ={counterPlus} fruit="appelAmount" />
+            <Counter counterTitle="🥝 Kiwi&#39;s"  fruitAmount={counterState.kiwiAmount} counterMin={counterMin} counterPlus ={counterPlus} fruit="kiwiAmount" />
+            <Button buttonType="button" buttonName="Reset" >
+                {resetFruitCounter}
+            </Button>
         </section>
         <section>
             <form onSubmit={handleSubmit(handleFormSubmit)} className="form-container">
-                <label htmlFor="firstNameField">Voornaam:
-                    <input id="firstNameField" {...register("firstName")} type="text" />
-                </label>
-                <label htmlFor="lastNameField">Achternaam:
-                    <input id="lastNameField" {...register("lastName")} type="text" />
-                </label>
-                <label htmlFor="ageField">Leeftijd:
-                    <input id="ageField" {...register("age")} type="number" />
-                </label>
-                <label htmlFor="zipCodeField">Postcode:
-                    <input id="zipCodeField" {...register("zipCode")} type="text" />
-                </label>
+                <Input inputId="firstNameField" inputName="firstName" inputType="text" register={register}
+                       inputLabel="Voornaam"/>
+                <Input inputId="lastNameField" inputName="lastName" inputType="text" register={register}
+                       inputLabel="Achternaam"/>
+                <Input inputId="ageField" inputName="lastName" inputType="number" register={register} inputLabel="Leeftijd"/>
+                <Input inputId="zipCodeField" inputName="zipCode" inputType="text" register={register} inputLabel="Postcode"/>
+
                 <label htmlFor="delivery">Bezorgfrequentie
-                    <select id="delivery" {...register("delivery")} >
+                    <select id="delivery" {...register("delivery")}>
                         <option value="weekly">iedere week</option>
                         <option value="two-weekly">om de week</option>
                         <option value="montly">iedere maand</option>
                     </select>
                 </label>
-                <label htmlFor="dayTime">
-                    <input id="dayTime" {...register("deliveryTime")} type="radio" value="dayTime" defaultChecked={true}/>
-                    Overdag</label>
-
-                <label htmlFor="evening">
-                    <input id="evening" {...register("deliveryTime")} type="radio" value="evening" />
+                <Input inputId="deliveryTime" inputName="deliveryTime" inputType="radio" register={register}>
+                    Overdag
+                </Input>
+                <Input inputId="deliveryTime" inputName="deliveryTime" inputType="radio" register={register}>
                     &#39;s Avonds
-                </label>
+                </Input>
                 <label htmlFor="comments">Opmerking
                     <textarea id="comments" {...register("comments")} ></textarea>
                 </label>
-                <label htmlFor="terms">
-                    <input id="terms" {...register("terms")} type="checkbox"/>
+                <Input inputId="terms" inputName="terms" inputType="checkbox" register={register} >
                     Ik ga akkoord met de voorwaarden
-                </label>
-                <button type="submit">Verzend</button>
+                </Input>
+                <Button buttonType="submit" buttonName="Verzend"/>
             </form>
         </section>
     </>)
