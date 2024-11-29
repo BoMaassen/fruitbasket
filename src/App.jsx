@@ -1,5 +1,6 @@
 import './App.css'
 import {useState} from "react";
+import {useForm} from 'react-hook-form';
 
 function App() {
     const [fruitAardbeiAmount, setAardbeiFruitAmount] = useState(0);
@@ -7,30 +8,16 @@ function App() {
     const [fruitAppelAmount, setAppelFruitAmount] = useState(0);
     const [fruitKiwiAmount, setKiwiFruitAmount] = useState(0);
 
-    const [formState, setFormState] = useState({
-        firstName: "",
-        lastName: "",
-        age: 0,
-        zipCode: "",
-        delivery: "",
-        deliveryTime: "dayTime",
-        comments: "",
-        terms: false,
-    });
-
-    function handleChange(e){
-       const changedField = e.target.name;
-       const newValue = e.target.type === "checkbox" ? e.target.checked : e.target.value
-
-            setFormState({
-                ...formState,
-                [changedField]: newValue,
-            });
-        }
-
     function resetFruitCounter() {
         return setAardbeiFruitAmount(0) + setBanaanFruitAmount(0) + setAppelFruitAmount(0) + setKiwiFruitAmount(0)
     }
+
+    function handleFormSubmit(data) {
+        console.log(data);
+    }
+
+    const { register, handleSubmit } = useForm({
+    });
 
     return (<>
         <section>
@@ -68,50 +55,39 @@ function App() {
             <button type="button" onClick={resetFruitCounter}>Reset</button>
         </section>
         <section>
-            <form className="form-container">
+            <form onSubmit={handleSubmit(handleFormSubmit)} className="form-container">
                 <label htmlFor="firstNameField">Voornaam:
-                    <input id="firstNameField" name="firstName" type="text" value={formState.firstName}
-                           onChange={handleChange}/>
+                    <input id="firstNameField" {...register("firstName")} type="text" />
                 </label>
                 <label htmlFor="lastNameField">Achternaam:
-                    <input id="lastNameField" name="lastName" type="text" value={formState.lastName}
-                           onChange={handleChange}/>
+                    <input id="lastNameField" {...register("lastName")} type="text" />
                 </label>
                 <label htmlFor="ageField">Leeftijd:
-                    <input id="ageField" name="age" type="number" value={formState.age}
-                           onChange={handleChange}/>
+                    <input id="ageField" {...register("age")} type="number" />
                 </label>
                 <label htmlFor="zipCodeField">Postcode:
-                    <input id="zipCodeField" name="zipCode" type="text" value={formState.zipCode}
-                           onChange={handleChange}/>
+                    <input id="zipCodeField" {...register("zipCode")} type="text" />
                 </label>
                 <label htmlFor="delivery">Bezorgfrequentie
-                    <select id="delivery" name="delivery" value={formState.delivery}
-                            onChange={handleChange}>
+                    <select id="delivery" {...register("delivery")} >
                         <option value="weekly">iedere week</option>
                         <option value="two-weekly">om de week</option>
                         <option value="montly">iedere maand</option>
                     </select>
                 </label>
                 <label htmlFor="dayTime">
-                    <input id="dayTime" name="deliveryTime" type="radio" checked={formState.deliveryTime === "dayTime"}
-                           value="dayTime"
-                           onChange={handleChange}/>
+                    <input id="dayTime" {...register("deliveryTime")} type="radio" value="dayTime" defaultChecked={true}/>
                     Overdag</label>
 
                 <label htmlFor="evening">
-                    <input id="evening" name="deliveryTime" type="radio" checked={formState.deliveryTime === "evening"}
-                           value={formState.deliveryTime}
-                           onChange={handleChange}/>
+                    <input id="evening" {...register("deliveryTime")} type="radio" value="evening" />
                     &#39;s Avonds
                 </label>
                 <label htmlFor="comments">Opmerking
-                    <textarea id="comments" name="comments" value={formState.comments}
-                              onChange={handleChange}></textarea>
+                    <textarea id="comments" {...register("comments")} ></textarea>
                 </label>
                 <label htmlFor="terms">
-                    <input id="terms" name="terms" type="checkbox" defaultChecked={formState.terms}
-                           onChange={handleChange}/>
+                    <input id="terms" {...register("terms")} type="checkbox"/>
                     Ik ga akkoord met de voorwaarden
                 </label>
                 <button type="submit">Verzend</button>
