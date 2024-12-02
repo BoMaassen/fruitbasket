@@ -1,8 +1,8 @@
 
-function Input({inputId, inputName, inputType, register, inputLabel, children}) {
+function Input({inputId, inputName, inputType, register, inputLabel, className, children}) {
 
     return (
-    <label htmlFor={inputId}>{inputLabel}
+    <label className={className} htmlFor={inputId}>{inputLabel}
         <input id={inputId} {...register(inputName)} type={inputType}/>
         {children}
     </label>

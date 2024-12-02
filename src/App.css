@@ -1,13 +1,91 @@
-.fruit-container {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.section-container{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
 }
 
+/*-----FRUIT COUNTERS-----*/
+.fruit-container, .fruit-container-active, .reset-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    margin: 10px 0;
+}
+.reset-button{
+    flex-basis: 40px;
+}
+
+.fruit-container {
+    border: 2px solid black;
+    border-radius: 5px;
+    flex-basis: 100px;
+    gap: 5px;
+}
+
+.fruit-container-active {
+    border: 2px solid chartreuse;
+    border-radius: 5px;
+    flex-basis: 100px;
+    gap: 5px;
+}
+
+.fruit-button{
+    padding: 0 5px;
+}
+
+/*-----FORM-----*/
 .form-container{
     display: flex;
     flex-direction: column;
-    padding: 20px 10px;
     align-items: flex-start;
+    justify-content: space-evenly;
+    flex-basis: 400px;
+    width: 300px;
 }
+
+.input-text{
+    display: flex;
+    width: 300px;
+    gap: 5px;
+}
+
+.input-text input, .comments textarea {
+    flex-grow: 1;
+}
+
+.delivery, .comments {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    gap: 5px;
+}
+
+.comments{
+    flex-basis: 100px;
+}
+
+.input-radio, .input-checkbox{
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 5px;
+}
+
+.send-button{
+    padding: 0 5px;
+}
+
+.delivery-time{
+    display: flex;
+    width: 300px;
+    gap: 10px;
+}
+
 
